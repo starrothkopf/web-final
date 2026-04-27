@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+#layout {
+  display: flex;
+  height: 100vh;
+}
+
+aside {
+  height: 100%;
+  flex: 0 0 250px;
+  overflow-x: hidden;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#input {
+    width: 30vw;
+}
+
+#output {
+  white-space: pre-wrap;
+}
+
+#output p:hover {
+    color: red;
+}

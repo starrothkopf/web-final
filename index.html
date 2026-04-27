@@ -3,22 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star site</title>
+    <link href="styles.css" rel="stylesheet">
+    <title>The poem will resemble you</title>
 </head>
 <body>
-    <header>
-        <h1>Yay</h1>
-    </header>
-    <nav>
-        <a href="something">Something</a>
-    </nav>
-    <main>
-        <section></section>
-        <section></section>
-    </main>
-    <footer>
-        <p>© 2026 Star Rothkopf</p>
-    </footer>
+    <div id="layout">
+        <aside>
+            <h2>My favorite lines</h2>
+            <div id="favorites"></div>
+        </aside>
+        <main>
+            <header>
+                <h1>The poem will resemble you</h1>
+                <p>Randomness and the spirit of software</p>
+            </header>
+            <nav>
+            
+            </nav>
+                <section>
+                    <h3>TO MAKE A DADAIST POEM</h3>
+                    <p>Take a newspaper. <br>
+                        Take some scissors. <br>
+                        Choose from this paper an article of the length you want to make your poem. <br>
+                        Cut out the article. <br>
+                        Next carefully cut out each of the words that makes up this article and put them all in a bag. <br>
+                        Shake gently. <br>
+                        Next take out each cutting one after the other. <br>
+                        Copy conscientiously in the order in which they left the bag. <br>
+                        The poem will resemble you. <br>
+                        —Tristan Tzara, 1920
+                    </p>
+                </section>
+                <section>
+                    <form id="generator">
+                        <textarea id="input" rows="1"></textarea>
+                        <br>
+                        <button id="shakeBtn">Shake gently</button>
+                        <button id="pickBtn">Pick a few</button>
+                    </form>
+                </section>
+                <section>
+                    <p id="output"></p>
+                </section>
+            <footer>
+                <p>© 2026 Star Rothkopf</p>
+            </footer>
+        </main>
+        <aside>
+            <h2>Notes</h2>
+            <p>
+                other things to include
+* William S. Burroughs Cut Up Method https://www.languageisavirus.com/creative-writing-techniques/william-s-burroughs-cut-ups.php  https://en.wikipedia.org/wiki/Cut-up_technique 
+* From the early 1970s, David Bowie has used cut-ups to create some of his lyrics. 
+    * From the early 1970s, David Bowie used cut-ups to create some of his lyrics. In 1995, he worked with Ty Roberts to develop a program called Verbasizer for his Apple PowerBook that could automatically rearrange multiple sentences written into it.
+    * https://www.vice.com/en/article/the-verbasizer-was-david-bowies-1995-lyric-writing-mac-app/ VERBASIZER
+* library of babel 
+    * https://www.smithsonianmag.com/innovation/digital-library-contains-every-phrase-that-could-ever-be-uttered-180956623/?no-ist “It just may be the most fascinatingly useless invention in history. As Borges foresaw, wisdom is useless if it is lost in a sea of nonsense. Yet people still look for it. One obsessed seeker looked for religious significance in the appearances of the different names of God. “I don’t think it has any practical applications like that for finding hidden text or coded messages,” Basile says. In his view, the novelty of the library is that it treats Hamlet’s soliloquies with the same statistical indifference as anything produced by that infinite simian typing pool. At least one writer recounted laboring over a sentence and then, finally satisfied, entering it into the search engine to discover, says Basile, “it was there all along.””
+* divination: “such a technique could be used to discover the true meaning of a given text” “Burroughs also suggested cut-ups may be effective as a form of divination saying, "When you cut into the present the future leaks out.””
+    * in that sense, related to bricolage (https://en.wikipedia.org/wiki/Bricolage)
+    * in software: Internet: In her book Life on the Screen (1995), Sherry Turkle discusses the concept of bricolage as it applies to problem solving in code projects and workspace productivity. She advocates the "bricoleur style" of programming as a valid and underexamined alternative to what she describes as the conventional structured "planner" approach. In this style of coding, the programmer works without an exhaustive preliminary specification, opting instead for a step-by-step growth and re-evaluation process. In her essay "Epistemological Pluralism", Turkle writes: "The bricoleur resembles the painter who stands back between brushstrokes, looks at the canvas, and only after this contemplation, decides what to do next."
+    * in religion: in contemporary society, individualsincreasingly craft their religious life and identity by pickingand mixing from a wide range of religious traditions. This hasbeen called bricolage. Bricolage is a French common word thathas no direct translation in the English language. It designatesactivities of fabricating, repairing, and installing—somethinglike “DIY.” It conveys the idea that this practice is amateurishor not serious—the verb bricoler in some contexts can betranslated as “fiddling.” Lévi-Strauss (1966) originally usedthe term as a metaphor to explain the ways in whichmythological thought creates meaning and “fixes” myths byreplacing missing or forgotten elements with residual components. In short, [f] or Levi-Strauss, mythical meaning-making bricoleurscombine their imagination with whatever knowledgetools they have at-hand in their repertoire (e.g., ritual, observation, social practices) and with whatever artifactsare available in their given context (i.e., discourses, institutions, and dominant knowledges) to meet diverseknowledge-production tasks. (Rogers 2012, 3)
+
+theory
+- encourage them to sit with each output, and not compulsively randomize. look for meaning in it or don’t! 
+- randomization is one way we can protect our minds against algorithmic flow, create jarring discontinuities 
+    - in (online) algorithms, randomization is used to avoid worst-case inputs
+    - randomization is essential for cybersecurity (lava lamps cloudflare encryption (https://www.cloudflare.com/learning/ssl/lava-lamp-encryption/ ) to create unpredictable and chaotic data
+        - “Encryption is a kind of structure that makes life difficult for other competing structures. Encryption does not promote frictionlessness, on the contrary it produces full and complete friction at all levels. Not the quotidian friction of everyday life, but a radical friction frustrating all expression.“ https://cultureandcommunication.org/galloway/anti-computer 
+- at the same time, randomization is always biased 
+- why is randomization a hard question? there are always assumptions about what a discontinuous input is, and some randoms are more random than others. when you ask someone for a random word, “banana” feels like a less random reply than “chalk”. 
+    - go to https://www.randomlists.com/things . click
+
+            </p>
+        </aside>
+    </div>
+    <script src="generator.js"></script>
     
 </body>
 </html>
