@@ -1,51 +1,640 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ==========================================================================
+   RESET + BASE
+   ========================================================================== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #1f1e1d;
+  --paper: #f2eee5;
+  --muted: #8b8680;
+  --rule: #d8d2c6;
+  --alg-color: #c0392b;             /* updated by JS when algorithm changes */
 }
 
 html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
 }
 
+a { color: inherit; }
+
+@font-face {
+  font-family: "Terminal Grotesque";
+  src: url("./fonts/terminal-grotesque-webfont.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Base";
+  src: url("./fonts/bianzhidai-Base.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Brush";
+  src: url("./fonts/bianzhidai-Brush.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bubble";
+  src: url("./fonts/bianzhidai-Buble.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cloud";
+  src: url("./fonts/bianzhidai-Cloud.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cube";
+  src: url("./fonts/bianzhidai-Cube.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pearl";
+  src: url("./fonts/bianzhidai-Peal.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ring";
+  src: url("./fonts/bianzhidai-Ring.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Stitches";
+  src: url("./fonts/bianzhidai-Stitches.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ==========================================================================
+   APP SHELL + NAV
+   ========================================================================== */
+
+#app { min-height: 100vh; display: flex; flex-direction: column; }
 
 #main-nav {
   position: sticky;
   top: 0;
-  width: 100%;
-  height: 20px;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 24px;
+  display: flex;
+  gap: 24px;
+  font-size: 0.85rem;
 }
+
+#main-nav a {
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+#main-nav a:hover { transform: rotate(-15deg); }
+#main-nav a:first-child { margin-right: auto; font-weight: 600; opacity: 1; }
+
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+
+section {
+  padding: 60px 32px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-inner { max-width: 1100px; margin: 0 auto; }
 
 #splash {
-  height: 100vh;
-}
-
-#app {
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding-top: 20px; /* nav neight */
+  justify-content: left;
+  align-items: left;
+  text-align: left;
 }
 
-#layout {
-  display: flex;
-  flex: 1; /* fills whatever height remains after nav */
+#splash h1 {
+  font-family: "Base", sans-serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 100%;
+  margin-bottom: 16px;
+}
+.splash-sub { color: var(--muted); max-width: 600px; }
+
+footer {
+  padding: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
-aside {
-  overflow-x: hidden;
-  padding: 10px;
-}
+/* ==========================================================================
+   GENERATOR
+   ========================================================================== */
 
-aside[hidden] {
-  display: none;
+#generator-section { padding: 40px 24px; }
+
+#generator-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 #generator {
-  margin: 20px;
+  border: 1px solid var(--rule);
+  padding: 24px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  min-height: 500px;
+}
+
+#generator h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 8px;
+}
+
+#generator h3 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
+.control-block { margin-bottom: 16px; }
+
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ==========================================================================
+   METHOD / SOURCE BUTTONS
+   ========================================================================== */
+
+.method-btn,
+.source-btn {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s, background-color 0.15s;
+  font-family: inherit;
+}
+.method-btn:hover,
+.source-btn:hover { opacity: 0.85; }
+
+.method-btn.active,
+.source-btn.active {
+  opacity: 1;
+  font-weight: 600;
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+#alg-select {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-left: 4px solid var(--alg-color);
+  cursor: pointer;
+  min-width: 220px;
+}
+
+/* ==========================================================================
+   GENERATOR FORM (input area, owned by source)
+   ========================================================================== */
+
+#generator-form { margin: 16px 0; }
+
+.source-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.source-wiki {
+  border: 1px dashed currentColor;
+  padding: 12px;
+}
+.source-wiki-btn {
+  font: inherit;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.source-wiki-btn:hover { background: currentColor; color: var(--paper); }
+.source-wiki-status { font-size: 0.85rem; opacity: 0.7; margin: 8px 0; }
+.source-wiki-preview {
+  font-size: 0.85rem;
+  max-height: 140px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   GENERATOR ACTIONS (randomize button + advanced toggle)
+   ========================================================================== */
+
+.generator-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+#make-poem {
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid currentColor;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+#make-poem:hover:not(:disabled) { opacity: 0.85; }
+#make-poem:disabled { opacity: 0.5; cursor: wait; }
+
+.link-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.link-btn:hover { opacity: 1; }
+
+/* ==========================================================================
+   OUTPUT (the live poem)
+   ========================================================================== */
+
+#output-area { margin-top: 16px; min-height: 100px; }
+
+.output-empty {
+  font-style: italic;
+  opacity: 0.5;
+  padding: 16px;
+  border: 1px dashed currentColor;
+}
+
+.poem {
+  position: relative;
+  padding: 24px 28px;
+  border: 1px solid currentColor;
+  cursor: default;
+  transition: background-color 0.2s;
+}
+
+.poem-line {
+  cursor: pointer;
+  margin: 6px 0;
+  transition: text-decoration 0.1s;
+  font-size: 1.05rem;
+}
+.poem-line:hover { text-decoration: underline; }
+
+.poem-toolbar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+}
+.poem-tool-btn {
+  font-size: 0.72rem;
+  background: none;
+  border: 1px solid currentColor;
+  padding: 3px 8px;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s, background-color 0.15s;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+}
+.poem-tool-btn:hover { opacity: 1; }
+.poem-tool-btn:disabled { opacity: 1; cursor: default; }
+
+.poem-editor {
+  width: 100%;
+  min-height: 200px;
+  border: none;
+  resize: vertical;
+  font: inherit;
+  background: transparent;
+  color: inherit;
+  outline: none;
+}
+
+/* ==========================================================================
+   INFO ASIDE
+   ========================================================================== */
+
+#panel-info {
+  border: 1px solid var(--rule);
+  padding: 20px;
+  background: var(--paper);
+  align-self: start;
+  position: sticky;
+  top: 70px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+
+.aside-heading {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.info-block { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+.info-block:last-child { border-bottom: none; }
+.info-block h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+.info-block p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+/* ==========================================================================
+   MY POEMS / FAVORITE LINES
+   ========================================================================== */
+
+.my-poems-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+.my-poems-col h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.empty-msg {
+  font-style: italic;
+  color: var(--muted);
+  padding: 12px;
+  border: 1px dashed var(--rule);
+}
+
+.saved-poem {
+  position: relative;
+  padding: 16px 40px 16px 16px;
+  border: 1px solid var(--rule);
+  margin-bottom: 12px;
+  background: var(--paper);
+}
+.saved-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+.saved-lines p { margin: 2px 0; font-size: 0.95rem; }
+
+.saved-delete {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.3;
+  color: inherit;
+}
+.saved-delete:hover { opacity: 1; color: #c0392b; }
+
+.fav-line {
+  position: relative;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid var(--rule);
+  margin-bottom: 8px;
+}
+.fav-line p { font-size: 0.95rem; }
+
+/* ==========================================================================
+   EXPLORE / READING (placeholders)
+   ========================================================================== */
+
+.section-hint {
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+#explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 40px auto;
+}
+
+.carousel-window {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.quote-card {
+  min-width: calc(50% - 10px);
+  margin-right: 20px;
+
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.quote-text {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.quote-author {
+  font-weight: bold;
+}
+
+.quote-source {
+  font-style: italic;
+  color: #666;
+}
+
+#prev, #next {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   LINKS
+   ========================================================================== */
+
+#links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+
+  max-width: 1400px;
+  margin: 10px auto;
+}
+
+.link-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 24px;
+
+  background: #fafafa;
+}
+
+.link-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+
+  margin-bottom: 12px;
+}
+
+.link-description {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.link-anchor {
+  color: blue;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   TOOLTIP
+   ========================================================================== */
+
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  white-space: nowrap;
+  z-index: 1000;
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   VERBASIZER COLUMNS
+   ========================================================================== */
+
+.verbasizer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.verbasizer-col {
+  border: 1px solid currentColor;
   padding: 10px;
-  width: 50vw;
-  border: 1px solid rgb(33, 32, 32);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.verbasizer-col h4 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+.verbasizer-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 8px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.verbasizer-fetch {
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.verbasizer-fetch:hover:not(:disabled) { background: currentColor; color: var(--paper); }
+.verbasizer-fetch:disabled { opacity: 0.5; cursor: wait; }
+
+.verbasizer-status {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  min-height: 1em;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  #generator-layout { grid-template-columns: 1fr; }
+  #panel-info { position: static; max-height: none; }
+  .my-poems-grid { grid-template-columns: 1fr; }
+  #main-nav { gap: 12px; flex-wrap: wrap; }
+  .verbasizer-cols { grid-template-columns: 1fr; }
 }

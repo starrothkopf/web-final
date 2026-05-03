@@ -3,15 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A poem generator that combines randomness algorithms (math.random, browser entropy, the NIST beacon, atmospheric radio noise) with poetic methods from Dada, Burroughs, Beckett, and Bowie.">
     <link href="styles.css" rel="stylesheet">
-    <title>Random</title>
+    <title>The Dadaist Computer</title>
 </head>
 <body>
-    <section id="splash">
-        <h1>The poem will resemble you</h1>
-        <p>Intro text</p>
-        <a href="resemble.html">Enter</a>
-    </section>
+    <div id="app">
+        <nav id="main-nav">
+            <a href="#splash">The Dadaist Computer</a>
+            <a href="#explore">Case Studies</a>
+            <a href="#reading">Reading</a>
+            <a href="#generator-section">Generator</a>
+            <a href="#my-poems">My Poems</a>
+        </nav>
+
+        <section id="splash">
+            <h1>The poem will resemble you</h1>
+            <p class="splash-sub">On the emptiness of language and the fullness that can be interpreted into it.</p>
+        </section>
+
+        <section id="explore">
+            <div id="links-grid"></div>
+        </section>
+
+        <section id="reading">
+            <div class="section-inner">
+                <div class="reading-layout">
+                    <div class="reading-sub">
+                        <p>Writers and artists from many eras have used randomness to resist to traditional methods of meaning-making, to uncover the unconscious, or to reject the value of utility all together. But to a computer scientist, randomness is an essential tool. Unpredictable algorithms allow statisticians to sample without bias, security specialists to encrypt, and game designers to make roguelikes replayable.</p>
+                        <br>
+                        <p>This website offers examples of randomness as a site of unity between the creative and the technical, using uselessness to release the algorithm from practicality and into the functions of lyric and myth. </p>
+                    </div>
+                    <div class="quotes-container">
+                        
+                    </div>
+
+
+                </div>
+
+                
+                <div class="carousel-wrapper">
+                    <button id="prev">←</button>
+
+                    <div class="carousel-window">
+                        <div class="carousel-track"></div>
+                    </div>
+
+                    <button id="next">→</button>
+                    </div>
+            </div>
+        </section>
+
+        <section id="generator-section">
+            <div id="generator-layout">
+                <main id="generator">
+                    <h2>Generator</h2>
+
+                    <div class="control-block" id="source-block">
+                        <h3>Source</h3>
+                        <div id="source-selector" class="btn-row"></div>
+                    </div>
+
+                    <div class="control-block">
+                        <h3>Entropy source</h3>
+                        <div id="alg-selector">
+                            <select id="alg-select"></select>
+                        </div>
+                    </div>
+
+                    <div class="control-block">
+                        <h3>Method</h3>
+                        <div id="method-selector" class="btn-row"></div>
+                    </div>
+
+                    <div id="generator-form"></div>
+
+                    <div class="generator-actions">
+                        <button type="button" id="make-poem">Randomize</button>
+                    </div>
+
+                    <div id="output-area"></div>
+                </main>
+
+                <aside id="panel-info">
+                    <h3 class="aside-heading">What is this?</h3>
+                    <div id="info-alg" class="info-block"></div>
+                    <div id="info-method" class="info-block"></div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="my-poems">
+            <div class="section-inner">
+                <h2>My Poems</h2>
+                <div class="my-poems-grid">
+                    <div class="my-poems-col">
+                        <h3>Saved poems</h3>
+                        <div id="saved-poems-list"></div>
+                    </div>
+                    <div class="my-poems-col">
+                        <h3>Favorite lines</h3>
+                        <div id="favorite-lines-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Star Rothkopf</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
