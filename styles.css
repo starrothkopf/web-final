@@ -7,32 +7,45 @@
 html, body {
   height: 100%;
   width: 100%;
+  overflow: hidden;
+}
+
+
+#main-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 20px;
+}
+
+#splash {
+  height: 100vh;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-top: 20px; /* nav neight */
 }
 
 #layout {
   display: flex;
-  height: 100vh;
+  flex: 1; /* fills whatever height remains after nav */
 }
 
 aside {
-  height: 100%;
-  flex: 0 0 250px;
   overflow-x: hidden;
   padding: 10px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-#input {
-    width: 30vw;
+aside[hidden] {
+  display: none;
 }
 
-#output {
-  white-space: pre-wrap;
-}
-
-#output p:hover {
-    color: red;
+#generator {
+  margin: 20px;
+  padding: 10px;
+  width: 50vw;
+  border: 1px solid rgb(33, 32, 32);
 }

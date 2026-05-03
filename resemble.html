@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+    <title>Random</title>
+</head>
+<body>
+    <div id="app">
+        <nav id="main-nav">
+            <a href="#" onclick="togglePanel(event, 'corpus')">My Poems</a>
+            <a href="index.html">The poem will resemble you</a>
+            <a href="#" onclick="togglePanel(event, 'info')">Info</a>
+        </nav>
+        <div id="layout">
+            <aside id="panel-corpus" hidden>
+                <h2>My poems</h2>
+            </aside>
+            <main id="generator">
+                <h2>Generator</h2>
+                <section id="alg-selector"> 
+                    <button class="alg-btn" data-alg="mathrandom">Math.random()</button>
+                    <button class="alg-btn" data-alg="crypto">Crypto</button>
+                    <button class="alg-btn" data-alg="nist">NIST</button>
+                    <button class="alg-btn" data-alg="radio">Radio Atmosphere</button>
+                </section>
+
+                <section id="method-selector">
+                    <button class="method-btn" data-method="dada">Dada</button>
+                    <button class="method-btn" data-method="cutup">Cut-up</button>
+                    <button class="method-btn" data-method="beckett">Beckett</button>
+                    <button class="method-btn" data-method="verbasizer">Verbasizer</button>
+                </section>
+
+                <section id="generator-form">
+
+                </section>
+                <button id="make-poem">Make</button>
+                <section id="output-area">
+    
+                </section>
+
+                <footer>
+                    <p>© 2026 Star Rothkopf</p>
+                </footer>
+            </main>
+            <aside id="panel-info">
+                <div id="info-alg" hidden>
+                   
+                </div>
+                <div id="info-method" hidden>
+                   
+                </div>
+            </aside>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
