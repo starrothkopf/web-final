@@ -10,12 +10,17 @@
   --muted: #8b8680;
   --rule: #d8d2c6;
   --alg-color: #c0392b;             /* updated by JS when algorithm changes */
+  --font-display: "Base", sans-serif;
+  --font-heading: "Terminal Grotesque", monospace;
+  --font-ui: "Terminal Grotesque", -apple-system, sans-serif;
+  --card-radius: 0px;
+  --border-style: solid;
 }
 
 html, body {
   background: var(--paper);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-ui);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -85,6 +90,20 @@ a { color: inherit; }
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Messier";
+  src: url("./fonts/bianzhidai-Messier.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Messy";
+  src: url("./fonts/bianzhidai-Messy.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* ==========================================================================
    APP SHELL + NAV
    ========================================================================== */
@@ -109,7 +128,7 @@ a { color: inherit; }
   transition: opacity 0.15s;
 }
 #main-nav a:hover { transform: rotate(-15deg); }
-#main-nav a:first-child { margin-right: auto; font-weight: 600; opacity: 1; }
+#main-nav a:first-child { margin-right: auto; font-weight: 600; opacity: 1; font-family: var(--font-display); }
 
 /* ==========================================================================
    SECTIONS
@@ -132,7 +151,7 @@ section {
 }
 
 #splash h1 {
-  font-family: "Base", sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -170,6 +189,7 @@ footer {
 }
 
 #generator h2 {
+  font-family: var(--font-heading);
   font-weight: 400;
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -406,6 +426,7 @@ footer {
   margin-top: 24px;
 }
 .my-poems-col h3 {
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -488,11 +509,10 @@ footer {
 .quote-card {
   min-width: calc(50% - 10px);
   margin-right: 20px;
-
   padding: 24px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background: #fafafa;
+  border: 1px var(--border-style) var(--rule);
+  border-radius: var(--card-radius);
+  background: var(--paper);
   box-sizing: border-box;
 }
 
@@ -531,12 +551,13 @@ footer {
 }
 
 .link-card {
-  border: 1px solid #ccc;
-  border-radius: 12px;
+  border: 1px var(--border-style) var(--rule);
+  border-radius: var(--card-radius);
   padding: 24px;
-
-  background: #fafafa;
+  background: var(--paper);
 }
+.link-card:nth-child(odd)  { transform: rotate(0.3deg); }
+.link-card:nth-child(even) { transform: rotate(-0.2deg); }
 
 .link-title {
   font-size: 1.3rem;
@@ -551,9 +572,30 @@ footer {
 }
 
 .link-anchor {
-  color: blue;
+  color: inherit;
+  opacity: 0.65;
   text-decoration: underline;
 }
+.link-anchor:hover { opacity: 1; }
+
+/* ==========================================================================
+   SCRAMBLE BUTTON
+   ========================================================================== */
+
+#scramble-style {
+  margin-left: auto;
+  background: none;
+  border: 1px solid currentColor;
+  color: inherit;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+#scramble-style:hover { opacity: 1; transform: rotate(-3deg); }
+
 
 /* ==========================================================================
    TOOLTIP

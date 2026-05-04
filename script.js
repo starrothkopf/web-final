@@ -1029,6 +1029,9 @@ function init() {
     document.getElementById('alg-select')?.addEventListener('change', e => setAlg(e.target.value));
     document.getElementById('make-poem')?.addEventListener('click', makePoem);
 
+    addScrambleButton();
+    scrambleStyle();          // random look on every load — the poem will resemble you
+
     setAlg('mathrandom');
     setMethod('dada');
     setSource('userInput');
@@ -1055,6 +1058,102 @@ if (document.readyState === 'loading') {
     init();
 }
 
+
+// ============================================================================
+// STYLE SCRAMBLER
+// ============================================================================
+
+const styleThemes = [
+    { name: 'offset',     paper: '#f2eee5', ink: '#1f1e1d', muted: '#8b8680', rule: '#d8d2c6' },
+    { name: 'ditto',      paper: '#e4ecf8', ink: '#0e1e3a', muted: '#5070a8', rule: '#a8c0dc' },
+    { name: 'risograph',  paper: '#eef5e0', ink: '#162616', muted: '#4a7058', rule: '#b0d090' },
+    { name: 'spirit',     paper: '#f5f0ff', ink: '#220845', muted: '#7050a8', rule: '#c8b0e8' },
+    { name: 'sepia',      paper: '#f9f2de', ink: '#2c1808', muted: '#7a5535', rule: '#d4b080' },
+    { name: 'newsprint',  paper: '#f2f0e8', ink: '#141414', muted: '#606060', rule: '#d0cec0' },
+    { name: 'cream',      paper: '#fef9f0', ink: '#2a2010', muted: '#9a8870', rule: '#e0d0b8' },
+    { name: 'chalkboard', paper: '#141e14', ink: '#e0f0cc', muted: '#88b868', rule: '#284028' },
+    { name: 'blueprint',  paper: '#0a1828', ink: '#c8e4fa', muted: '#6090c0', rule: '#183860' },
+    { name: 'darkroom',   paper: '#1a0808', ink: '#fae0d0', muted: '#c07060', rule: '#501818' },
+    { name: 'midnight',   paper: '#0c0c1e', ink: '#e4dcff', muted: '#8878c8', rule: '#242048' },
+    { name: 'telegraph',  paper: '#080e08', ink: '#b0f0b0', muted: '#60c060', rule: '#102810' },
+];
+
+const fontThemes = [
+    { display: '"Base", sans-serif',      heading: '"Terminal Grotesque", monospace', ui: '"Terminal Grotesque", monospace' },
+    { display: '"Brush", serif',           heading: '"Base", sans-serif',              ui: '"Base", sans-serif' },
+    { display: '"Bubble", sans-serif',     heading: '"Ring", sans-serif',              ui: '"Base", sans-serif' },
+    { display: '"Cube", monospace',        heading: '"Stitches", monospace',           ui: '"Terminal Grotesque", monospace' },
+    { display: '"Pearl", serif',           heading: '"Pearl", serif',                  ui: '"Terminal Grotesque", monospace' },
+    { display: '"Ring", sans-serif',       heading: '"Pearl", serif',                  ui: '"Base", sans-serif' },
+    { display: '"Cloud", sans-serif',      heading: '"Cloud", sans-serif',             ui: '"Base", sans-serif' },
+    { display: '"Stitches", sans-serif',   heading: '"Cube", monospace',               ui: '"Terminal Grotesque", monospace' },
+    { display: '"Base", sans-serif',       heading: '"Brush", serif',                  ui: '"Terminal Grotesque", monospace' },
+    { display: '"Bubble", sans-serif',     heading: '"Messier", sans-serif',           ui: '"Base", sans-serif' },
+];
+
+const borderThemes = [
+    { style: 'solid',  radius: '0px' },
+    { style: 'dashed', radius: '0px' },
+    { style: 'solid',  radius: '0px' },
+    { style: 'double', radius: '0px' },
+    { style: 'dashed', radius: '0px' },
+    { style: 'dotted', radius: '0px' },
+    { style: 'solid',  radius: '0px' },
+];
+
+let _lastColorIdx = -1;
+let _lastFontIdx  = -1;
+
+function scrambleStyle() {
+    const r = document.documentElement;
+
+    // pick color theme (no immediate repeat)
+    let ci;
+    do { ci = Math.floor(Math.random() * styleThemes.length); } while (ci === _lastColorIdx && styleThemes.length > 1);
+    _lastColorIdx = ci;
+    const c = styleThemes[ci];
+
+    // pick font theme (no immediate repeat)
+    let fi;
+    do { fi = Math.floor(Math.random() * fontThemes.length); } while (fi === _lastFontIdx && fontThemes.length > 1);
+    _lastFontIdx = fi;
+    const f = fontThemes[fi];
+
+    // pick border theme
+    const b = borderThemes[Math.floor(Math.random() * borderThemes.length)];
+
+    // apply colors
+    r.style.setProperty('--paper', c.paper);
+    r.style.setProperty('--ink',   c.ink);
+    r.style.setProperty('--muted', c.muted);
+    r.style.setProperty('--rule',  c.rule);
+
+    // apply fonts
+    r.style.setProperty('--font-display', f.display);
+    r.style.setProperty('--font-heading', f.heading);
+    r.style.setProperty('--font-ui',      f.ui);
+
+    // apply border style
+    r.style.setProperty('--border-style', b.style);
+    r.style.setProperty('--card-radius',  b.radius);
+
+    // clear any method-specific inline styles on the generator
+    // so the new theme colours show through
+    const gen = document.getElementById('generator');
+    if (gen) { gen.style.backgroundColor = ''; gen.style.color = ''; }
+    const makeBtn = document.getElementById('make-poem');
+    if (makeBtn) { makeBtn.style.backgroundColor = ''; makeBtn.style.color = ''; }
+}
+
+function addScrambleButton() {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+    const btn = document.createElement('button');
+    btn.id = 'scramble-style';
+    btn.textContent = 'RANDOMIZE';
+    btn.addEventListener('click', scrambleStyle);
+    nav.appendChild(btn);
+}
 
 // ============================================================================
 // EXTRAS
