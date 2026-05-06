@@ -11,53 +11,50 @@
     <div id="app">
         <nav id="main-nav">
             <a href="#splash">The Dadaist Computer</a>
-            <a href="#explore">Case Studies</a>
-            <a href="#reading">Reading</a>
-            <a href="#generator-section">Generator</a>
-            <a href="#my-poems">My Poems</a>
+            <a href="#generator-section">To Make</a>
+            <a href="#my-poems">You</a>
+            <a href="#explore">Uselessnesses</a>
+            <a href="#reading">And Utilities</a>
         </nav>
 
         <section id="splash">
-            <h1>The poem will resemble you</h1>
-            <p class="splash-sub">On the emptiness of language and the fullness that can be interpreted into it.</p>
-        </section>
+            <div class="splash-track">
 
-        <section id="explore">
-            <div id="links-grid"></div>
-        </section>
+                <div class="panel intro">
+                    <p class="splash-sub">TO MAKE A DADAIST POEM</p>
 
-        <section id="reading">
-            <div class="section-inner">
-                <div class="reading-layout">
-                    <div class="reading-sub">
-                        <p>Writers and artists from many eras have used randomness to resist to traditional methods of meaning-making, to uncover the unconscious, or to reject the value of utility all together. But to a computer scientist, randomness is an essential tool. Unpredictable algorithms allow statisticians to sample without bias, security specialists to encrypt, and game designers to make roguelikes replayable.</p>
-                        <br>
-                        <p>This website offers examples of randomness as a site of unity between the creative and the technical, using uselessness to release the algorithm from practicality and into the functions of lyric and myth. </p>
-                    </div>
-                    <div class="quotes-container">
-                    </div>
+                    <p>Take a newspaper.</p>
+                    <p>Take some scissors.</p>
+                    <p>Choose from this paper an article of the length you want to make your poem.</p>
+                    <p>Cut out the article.</p>
+                    <p>Next carefully cut out each of the words that makes up this article and put them all in a bag.</p>
+                    <p>Shake gently.</p>
+                    <p>Next take out each cutting one after the other.</p>
+                    <h1>The poem will resemble you.</h1>
+                    <p>—Tristan Tzara, 1920</p>
                 </div>
 
-                
-                <div class="carousel-wrapper">
-                    <button id="prev">←</button>
+                <div class="panel about">
+                    <p class="splash-sub">
+                        Writers and artists from many eras have used randomness to resist to traditional methods of meaning-making, to uncover the unconscious, or to reject the value of utility all together. But to a computer scientist, randomness is an essential tool. Unpredictable algorithms allow statisticians to sample without bias, security specialists to encrypt, and game designers to make roguelikes replayable.
+                    </p>
+                    <br>
 
-                    <div class="carousel-window">
-                        <div class="carousel-track"></div>
-                    </div>
+                    <p class="splash-sub">
+                        This website is an art object. It offers examples of randomness as a site of unity between the creative and the technical, using uselessness to release the algorithm from practicality and into the functions of lyric and myth.
+                    </p>
+                </div>
 
-                    <button id="next">→</button>
-                    </div>
             </div>
         </section>
 
         <section id="generator-section">
             <div id="generator-layout">
                 <main id="generator">
-                    <h2>Generator</h2>
+                    <h1>Generator</h1>
 
                     <div class="control-block" id="source-block">
-                        <h3>Source</h3>
+                        <h3>Text source</h3>
                         <div id="source-selector" class="btn-row"></div>
                     </div>
 
@@ -74,16 +71,15 @@
                     </div>
 
                     <div id="generator-form"></div>
-
                     <div class="generator-actions">
-                        <button type="button" id="make-poem">Randomize</button>
+                        <button type="button" id="make-poem">Randomize</button> <p>On the emptiness of language and the fullness that can be interpreted into it.</p>
                     </div>
 
                     <div id="output-area"></div>
                 </main>
 
                 <aside id="panel-info">
-                    <h3 class="aside-heading">What is this?</h3>
+                    <h3 class="aside-heading">Let the sources and methods of randomness impact each poem</h3>
                     <div id="info-alg" class="info-block"></div>
                     <div id="info-method" class="info-block"></div>
                 </aside>
@@ -105,6 +101,33 @@
                 </div>
             </div>
         </section>
+
+        <section id="explore">
+            <div id="links-grid"></div>
+        </section>
+
+        <section id="reading">
+            <div class="section-inner">
+                <div class="reading-layout">
+                    <div class="reading-sub">
+                    </div>
+                    <div class="quotes-container">
+                    </div>
+                </div>
+
+                
+                <div class="carousel-wrapper">
+                    <button id="prev">↜</button>
+
+                    <div class="carousel-window">
+                        <div class="carousel-track"></div>
+                    </div>
+
+                    <button id="next">↝</button>
+                    </div>
+            </div>
+        </section>
+
     </div>
 
     <script src="script.js"></script>

@@ -1,55 +1,9 @@
-// ============================================================================
-// TYPE CONTRACTS
-// ============================================================================
-//
-// Poem
-//   { id: number, lines: Line[], method: string, alg: string, source: string, date: string }
-//
-// Line
-//   { id: number, text: string }
-//
-// Algorithm  (entries in `algorithms` registry)
-//   id          string         matches the key in `algorithms`
-//   title       string         user-facing label
-//   text        string         explanation shown in info panel
-//   color       string         accent color (hex with #) when this alg is active
-//   prepare()   async fn       fetch any external entropy. No-op for local algs.
-//   random(n)   sync fn        returns n floats in [0,1). Must work after prepare().
-//
-// Method  (entries in `methods` registry)
-//   id          string
-//   title       string
-//   text        string
-//   bgColor     string         panel background when active
-//   accentColor string         button accent when active
-//   textColor   string         text color when active
-//   generate(input, randomFn)  returns array of line strings.
-//                              `input` is a string by default (from the active source),
-//                              OR whatever shape the method's readInput() returns.
-//   renderForm? (optional)     if defined, the method takes over the form area
-//                              and the source picker is hidden. Use this for methods
-//                              that need bespoke UI (e.g. multi-column verbasizer).
-//   readInput?  (optional)     if defined, called instead of source.getText() —
-//                              returns whatever data shape the method needs.
-//
-// Source  (entries in `sources` registry)
-//   id          string
-//   title       string
-//   text        string         info-panel description
-//   renderForm(container)      builds whatever input UI this source needs
-//   getText()   async fn       returns the text the user wants to remix
-//
-// ============================================================================
-// UTILITIES
-// ============================================================================
 
-// unique id generator for poems and lines
 let _idCounter = 0;
 function uid() {
     return Date.now() * 1000 + (_idCounter++);
 }
 
-// fisher-yates shuffle using a stream of random floats
 function fisherYates(arr, randomFn) {
     const out = [...arr];
     const nums = randomFn(out.length);
@@ -60,7 +14,6 @@ function fisherYates(arr, randomFn) {
     return out;
 }
 
-// chunk an array of words into lines of variable length
 function chunkLines(words, randomFn, minLen = 3, maxLen = 8) {
     const lines = [];
     let i = 0;
@@ -74,7 +27,6 @@ function chunkLines(words, randomFn, minLen = 3, maxLen = 8) {
     return lines;
 }
 
-// split into sentences (keeps punctuation)
 function splitSentences(text) {
     return text
         .replace(/\s+/g, ' ')
@@ -86,8 +38,7 @@ function splitSentences(text) {
 // deterministic PRNG seeded from a 32-bit integer (Mulberry32)
 // used by nist + random.org algorithms — they give us a small amount of
 // real entropy, which we use as the seed for a PRNG so we have enough
-// numbers to actually run methods. The entropy SOURCE is still real, the
-// PRNG just stretches it.
+// numbers to actually run methods
 function mulberry32(seed) {
     let a = seed >>> 0;
     return function () {
@@ -110,14 +61,14 @@ function hexToSeed(hex) {
 }
 
 // ============================================================================
-// ALGORITHMS REGISTRY (entropy sources)
+// ALGORITHMS REGISTRY 
 // ============================================================================
 
 const algorithms = {
     mathrandom: {
         id: 'mathrandom',
         title: 'Math.random()',
-        text: 'JavaScript\'s built-in pseudo-random generator. In V8 (Chrome) it\'s xorshift128+. Fast, deterministic from an internal state, not cryptographically secure but fine for shuffling.',
+        text: 'JavaScript\'s built-in pseudo-random generator. In V8 (Chrome) it\'s xorshift128+. Fast & deterministic: there are 2⁵² (or 4,503,599,627,370,496) possible values for Math.random to return.',
         color: '#c0392b',
         async prepare() {
             // no setup needed
@@ -130,7 +81,7 @@ const algorithms = {
     crypto: {
         id: 'crypto',
         title: 'Crypto.getRandomValues()',
-        text: 'The browser\'s cryptographic random source. Pulls from OS-level entropy: hardware noise, interrupt timing, mouse movement, network jitter. Suitable for keys, nonces, anything that must be unguessable.',
+        text: 'The browser\'s cryptographic random source. True random coming from your operating system\'s hardware noise, interrupt timing, mouse movement, and network jitter.',
         color: '#2c5f7c',
         async prepare() {
             // no setup needed — the API is sync
@@ -145,7 +96,7 @@ const algorithms = {
     nist: {
         id: 'nist',
         title: 'NIST Randomness Beacon',
-        text: 'Every 60 seconds, NIST publishes a fresh 512-bit pulse of randomness signed with their private key. Anyone in the world can reference the same value. Randomness as shared, public, canonical fact.',
+        text: 'Every 60 seconds, NIST publishes a fresh 512-bit pulse of randomness signed with their private key. Anyone in the world can reference the same value. This randomness is shared amongst others.',
         color: '#5c3a8c',
         _rng: null,
         async prepare() {
@@ -171,7 +122,7 @@ const algorithms = {
     radio: {
         id: 'radio',
         title: 'Atmospheric Radio Noise (random.org)',
-        text: 'random.org collects randomness from atmospheric radio noise picked up by antennas around the world. Truly non-deterministic — there is no algorithm behind it, only the weather.',
+        text: 'random.org collects randomness from atmospheric radio noise picked up by antennas around the world. Truly non-deterministic. There is no algorithm behind it, only the weather.',
         color: '#3a7c5c',
         _rng: null,
         async prepare() {
@@ -196,18 +147,15 @@ const algorithms = {
     }
 };
 
-// ============================================================================
-// METHODS REGISTRY (poetic transforms)
-// ============================================================================
 
 const methods = {
     dada: {
         id: 'dada',
         title: 'Dada',
-        text: 'TO MAKE A DADAIST POEM. Take a newspaper. Take some scissors. Choose from this paper an article of the length you want to make your poem. Cut out the article. Next carefully cut out each of the words that makes up this article and put them all in a bag. Shake gently. Next take out each cutting one after the other. Copy conscientiously in the order in which they left the bag. The poem will resemble you. — Tristan Tzara, 1920',
-        bgColor: '#f5f0e8',
+        text: 'Shakes gently. Every product of disgust capable of becoming a negation of the family is Dada; a protest with the fists of its whole being engaged in destructive action: Dada; know ledge of all the means rejected up until now by the shamefaced sex of comfortable compromise and good manners: Dada; abolition o/ logic, which is the dance of those impotent to create: Dada; of every social hierarchy and equation set up for the sake of values by our valets: Dada: every object, all objects, sentiments, obscurities, apparitions and the precise clash of parallel lines are weapons for the fight: Dada; abolition of memory: Dada; abolition of archaeology: Dada; abolition of prophets: Dada; abolition of the future: Dada; absolute and unquestionable faith in every god that is the immediate product of spontaneity: Dada; elegant and unprejudiced leap from a harmony to the other sphere; trajectory of a word tossed like a screeching phonograph record; to respect all individuals in their folly of the moment: whether it be serious, fearful, timid, ardent, vigorous, determined, enthusiastic; to divest one\'s church of eve ry useless cumbersome accessory; to spit out disagreeable or amorous ideas like a luminous waterfall, or coddle them—with the extreme satisfaction that it doesn\'t matter in the least—with the same intensity in the thicket of core\'s soul pure of insects for blood well-born, and gilded with bodies of archangels. Freedom: Dada Dada Dada, a roaring of tense colors, and interlacing of opposites and of all contradictions, grotesques, inconsistencies: LIFE',
+        bgColor: '#f5fff',
         accentColor: '#e8d5b7',
-        textColor: '#c0392b',
+        textColor: '#b0492c',
         generate(text, randomFn) {
             const words = text.trim().split(/\s+/).filter(Boolean);
             if (!words.length) return [];
@@ -219,7 +167,7 @@ const methods = {
     cutup: {
         id: 'cutup',
         title: 'Cut-Up',
-        text: 'Take a page. Like this page. Now cut down the middle. You have four sections: 1 2 3 4. Now rearrange the sections placing section four with section one and section two with section three. And you have a new page. — William S. Burroughs',
+        text: '\"Take a page. Like this page. Now cut down the middle. You have four sections: 1 2 3 4. Now rearrange the sections placing section four with section one and section two with section three. And you have a new page.\" — William S. Burroughs. \"When you cut into the present the future leaks out.\" — William S. Burroughs. ',
         bgColor: '#ede4d3',
         accentColor: '#a89274',
         textColor: '#3a2818',
@@ -256,8 +204,8 @@ const methods = {
     beckett: {
         id: 'beckett',
         title: 'Lessness',
-        text: 'For "Lessness," Beckett wrote sixty sentences on different pieces of paper, put them in a box, and drew them out at random. Sentence boundaries are preserved — only their order is undone.',
-        bgColor: '#f0ede5',
+        text: 'Sentence boundaries are preserved. For "Lessness," Beckett wrote sixty sentences on different pieces of paper, put them in a box, and drew them out at random. Although Lessness is linear prose, its orderly disorder calls for a reading process in which the reader works to untangle the threads of sameness and difference to discern the underlying structure, becoming aware of the usually unconscious processes of interpretation. Tightly interwoven contradictory perspectives drive the reader\'s attempts at reconciliation. The two halves of Lessness are two of the 8.3 x 1081 possible orderings of Beckett\'s 60 sentences.',
+        bgColor: '#a89274',
         accentColor: '#b8b0a0',
         textColor: '#2a2820',
         generate(text, randomFn) {
@@ -271,10 +219,10 @@ const methods = {
     verbasizer: {
         id: 'verbasizer',
         title: 'Verbasizer',
-        text: 'David Bowie\'s digital cut-up tool: text divided across columns, then randomized — "a real kaleidoscope of meanings and topics and nouns and verbs all sort of slamming into each other." Fill each column yourself or pull a random Wikipedia article into it. The generator walks left to right and at each position picks a word from a random column.',
-        bgColor: '#e5e8f0',
+        text: 'From the early 1970s, David Bowie has used cut-ups to create some of his lyrics. "A real kaleidoscope of meanings and topics and nouns and verbs all sort of slamming into each other." Fill each column yourself or pull a random Wikipedia article into it. The generator walks left to right and at each position picks a word from a random column. “Randomness and juxtaposition were to be the guiding principles in his work in the second half of the 1970s,” wrote according to author David Buckley in Strange Fascination: David Bowie: The Definitive Story. “The sense of randomness appealed greatly to Bowie. He would write a song both in the first and third person and then randomize these two perspectives to create a \'new\' subjectivity.” The results appeared on three albums from that period—Low, Heroes, and Lodger, the so-called Berlin Trilogy—today considered some of Bowie\'s best work.”',
+        bgColor: '#c0392b',
         accentColor: '#7c8ca8',
-        textColor: '#1a2540',
+        textColor: '#f5f0e8',
         // method-level form override: 3 columns, each independently fillable
         renderForm(container) {
             container.replaceChildren();
@@ -367,13 +315,13 @@ function verbasizeRows(rows, randomFn) {
 const sources = {
     userInput: {
         id: 'userInput',
-        title: 'Your own text',
-        text: 'Type or paste any text. Newspapers, your own writing, an email, a recipe, a love letter — anything is grist.',
+        title: 'I\'ll type',
+        text: 'Type or paste any text. Newspapers, your own writing, an email, a recipe, a love letter.',
         renderForm(container) {
             container.replaceChildren();
             const ta = document.createElement('textarea');
             ta.id = 'input-main';
-            ta.placeholder = 'Write or paste any text here...';
+            ta.placeholder = 'Anything anything anything here...';
             ta.className = 'source-textarea';
             container.appendChild(ta);
         },
@@ -385,7 +333,7 @@ const sources = {
 
     wikipedia: {
         id: 'wikipedia',
-        title: 'Random Wikipedia article',
+        title: 'I\'ll grab something from Wikipedia',
         text: 'Pulls a random article summary from Wikipedia\'s REST API. The encyclopedia as raw material — every cut-up starts with someone else\'s certainty.',
         _cached: '',
         renderForm(container) {
@@ -480,8 +428,8 @@ quoteArray.forEach(quote => {
 
   card.innerHTML = `
     <p class="quote-text">${quote.text}</p>
-    <div class="quote-author">${quote.author}</div>
     <div class="quote-source">${quote.source}</div>
+    <div class="quote-author">${quote.author}</div>
   `
 
   track.appendChild(card)
@@ -554,8 +502,12 @@ const links = {
 const grid = document.querySelector("#links-grid")
 
 Object.values(links).forEach(item => {
-  const card = document.createElement("div")
+  const card = document.createElement("a")
   card.classList.add("link-card")
+
+  card.href = item.link
+  card.target = "_blank"
+  card.rel = "noopener noreferrer"
 
   const title = document.createElement("h2")
   title.classList.add("link-title")
@@ -565,16 +517,8 @@ Object.values(links).forEach(item => {
   description.classList.add("link-description")
   description.textContent = item.description
 
-  const anchor = document.createElement("a")
-  anchor.classList.add("link-anchor")
-
-  anchor.href = item.link
-  anchor.textContent = "Visit site"
-  anchor.target = "_blank"
-
   card.appendChild(title)
   card.appendChild(description)
-  card.appendChild(anchor)
 
   grid.appendChild(card)
 })
@@ -670,10 +614,6 @@ function setGeneratorColor(bgColor, accentColor, textColor) {
     }
 }
 
-// ============================================================================
-// MAKE POEM — async orchestrator: source → entropy → method → render
-// ============================================================================
-
 async function makePoem(event) {
     if (event) event.preventDefault();
     const btn = document.getElementById('make-poem');
@@ -691,7 +631,7 @@ async function makePoem(event) {
             ? input.some(s => s && s.trim())
             : (typeof input === 'string' && input.trim());
         if (!hasContent) {
-            renderEmpty('Add some text first (or fetch an article).');
+            renderEmpty('Write first or summon from Wikipedia.');
             return;
         }
 
@@ -730,10 +670,6 @@ function renderEmpty(message) {
     p.textContent = message;
     output.appendChild(p);
 }
-
-// ============================================================================
-// RENDER POEM (the live, interactive output)
-// ============================================================================
 
 // shared tooltip element
 const tooltip = document.createElement('div');
@@ -811,7 +747,7 @@ function renderPoem(poem) {
     output.appendChild(poemEl);
 }
 
-// switch a poem element into edit mode — replaces lines with a textarea
+// switch a poem element into edit mode, replaces lines with a textarea
 function enterEditMode(poemEl, poem) {
     hideTooltip();
     const ta = document.createElement('textarea');
@@ -842,10 +778,6 @@ function enterEditMode(poemEl, poem) {
     // place cursor at end
     ta.setSelectionRange(ta.value.length, ta.value.length);
 }
-
-// ============================================================================
-// STORAGE
-// ============================================================================
 
 function loadPoems() {
     try {
@@ -891,10 +823,6 @@ function deleteLine(id, event) {
     renderFavoriteLines();
      event.preventDefault();
 }
-
-// ============================================================================
-// SAVED POEMS / FAVORITE LINES VIEWS
-// ============================================================================
 
 function renderSavedPoems() {
     const container = document.getElementById('saved-poems-list');
@@ -974,10 +902,6 @@ function renderFavoriteLines() {
         container.appendChild(row);
     });
 }
-
-// ============================================================================
-// INIT + EVENT WIRING
-// ============================================================================
 
 function buildAlgSelect() {
     const select = document.getElementById('alg-select');
@@ -1059,46 +983,38 @@ if (document.readyState === 'loading') {
 }
 
 
-// ============================================================================
-// STYLE SCRAMBLER
-// ============================================================================
-
 const styleThemes = [
-    { name: 'offset',     paper: '#f2eee5', ink: '#1f1e1d', muted: '#8b8680', rule: '#d8d2c6' },
-    { name: 'ditto',      paper: '#e4ecf8', ink: '#0e1e3a', muted: '#5070a8', rule: '#a8c0dc' },
-    { name: 'risograph',  paper: '#eef5e0', ink: '#162616', muted: '#4a7058', rule: '#b0d090' },
-    { name: 'spirit',     paper: '#f5f0ff', ink: '#220845', muted: '#7050a8', rule: '#c8b0e8' },
-    { name: 'sepia',      paper: '#f9f2de', ink: '#2c1808', muted: '#7a5535', rule: '#d4b080' },
-    { name: 'newsprint',  paper: '#f2f0e8', ink: '#141414', muted: '#606060', rule: '#d0cec0' },
-    { name: 'cream',      paper: '#fef9f0', ink: '#2a2010', muted: '#9a8870', rule: '#e0d0b8' },
-    { name: 'chalkboard', paper: '#141e14', ink: '#e0f0cc', muted: '#88b868', rule: '#284028' },
-    { name: 'blueprint',  paper: '#0a1828', ink: '#c8e4fa', muted: '#6090c0', rule: '#183860' },
-    { name: 'darkroom',   paper: '#1a0808', ink: '#fae0d0', muted: '#c07060', rule: '#501818' },
-    { name: 'midnight',   paper: '#0c0c1e', ink: '#e4dcff', muted: '#8878c8', rule: '#242048' },
-    { name: 'telegraph',  paper: '#080e08', ink: '#b0f0b0', muted: '#60c060', rule: '#102810' },
+    { name: 'offset',     bg: '#f2eee5', text: '#1f1e1d', muted: '#8b8680', line: '#d8d2c6' },
+    { name: 'ditto',      bg: '#e4ecf8', text: '#0e1e3a', muted: '#5070a8', line: '#a8c0dc' },
+    { name: 'risograph',  bg: '#eef5e0', text: '#162616', muted: '#4a7058', line: '#b0d090' },
+    { name: 'spirit',     bg: '#f5f0ff', text: '#220845', muted: '#7050a8', line: '#c8b0e8' },
+    { name: 'sepia',      bg: '#f9f2de', text: '#2c1808', muted: '#7a5535', line: '#d4b080' },
+    { name: 'newsprint',  bg: '#f2f0e8', text: '#141414', muted: '#606060', line: '#d0cec0' },
+    { name: 'cream',      bg: '#fef9f0', text: '#2a2010', muted: '#9a8870', line: '#e0d0b8' },
+    { name: 'chalkboard', bg: '#141e14', text: '#e0f0cc', muted: '#88b868', line: '#284028' },
+    { name: 'blueprint',  bg: '#0a1828', text: '#c8e4fa', muted: '#6090c0', line: '#183860' },
+    { name: 'darkroom',   bg: '#1a0808', text: '#fae0d0', muted: '#c07060', line: '#501818' },
+    { name: 'midnight',   bg: '#0c0c1e', text: '#e4dcff', muted: '#8878c8', line: '#242048' },
+    { name: 'telegraph',  bg: '#080e08', text: '#b0f0b0', muted: '#60c060', line: '#102810' },
 ];
 
 const fontThemes = [
-    { display: '"Base", sans-serif',      heading: '"Terminal Grotesque", monospace', ui: '"Terminal Grotesque", monospace' },
-    { display: '"Brush", serif',           heading: '"Base", sans-serif',              ui: '"Base", sans-serif' },
-    { display: '"Bubble", sans-serif',     heading: '"Ring", sans-serif',              ui: '"Base", sans-serif' },
-    { display: '"Cube", monospace',        heading: '"Stitches", monospace',           ui: '"Terminal Grotesque", monospace' },
-    { display: '"Pearl", serif',           heading: '"Pearl", serif',                  ui: '"Terminal Grotesque", monospace' },
-    { display: '"Ring", sans-serif',       heading: '"Pearl", serif',                  ui: '"Base", sans-serif' },
-    { display: '"Cloud", sans-serif',      heading: '"Cloud", sans-serif',             ui: '"Base", sans-serif' },
-    { display: '"Stitches", sans-serif',   heading: '"Cube", monospace',               ui: '"Terminal Grotesque", monospace' },
-    { display: '"Base", sans-serif',       heading: '"Brush", serif',                  ui: '"Terminal Grotesque", monospace' },
-    { display: '"Bubble", sans-serif',     heading: '"Messier", sans-serif',           ui: '"Base", sans-serif' },
+    { display: '"Bodoni Poster", sans-serif',       heading: '"Andalé Mono", monospace',        ui: '"Terminal Grotesque", monospace' },
+    { display: '"American Typewriter", serif',      heading: '"Century Gothic", sans-serif',    ui: '"Terminal Grotesque", monospace' },
+    { display: '"Times New Roman", serif',     heading: '"Verdana", sans-serif',           ui: '"Century Gothic", sans-serif' },
+    { display: '"Terminal Grotesque", monospace',             heading: '"Console Courier", monospace',    ui: '"Terminal Grotesque", monospace' },
+    { display: '"Century Gothic", serif',           heading: '"Terminal Grotesque", monospace', ui: '"Terminal Grotesque", monospace' },
+    { display: '"Bodoni Poster", sans-serif',       heading: '"Century Gothic", serif',         ui: '"Verdana", sans-serif' },
+    { display: '"American Typewriter", sans-serif', heading: '"Andalé Mono", monospace',        ui: '"Times New Roman", serif' },
+    { display: '"Terminal Grotesque", monospace',            heading: '"Verdana", monospace',   ui: '"Times New Roman", serif' },
+    { display: '"Times New Roman", serif',     heading: '"Terminal Grotesque", monospace',      ui: '"Century Gothic", serif' },
+    { display: '"Century Gothic", sans-serif',      heading: '"Console Courier", monospace',    ui: '"Verdana", sans-serif' },
 ];
 
 const borderThemes = [
     { style: 'solid',  radius: '0px' },
-    { style: 'dashed', radius: '0px' },
-    { style: 'solid',  radius: '0px' },
-    { style: 'double', radius: '0px' },
-    { style: 'dashed', radius: '0px' },
-    { style: 'dotted', radius: '0px' },
-    { style: 'solid',  radius: '0px' },
+    { style: 'solid',  radius: '20px' },
+    { style: 'double', radius: '10px' },
 ];
 
 let _lastColorIdx = -1;
@@ -1123,10 +1039,10 @@ function scrambleStyle() {
     const b = borderThemes[Math.floor(Math.random() * borderThemes.length)];
 
     // apply colors
-    r.style.setProperty('--paper', c.paper);
-    r.style.setProperty('--ink',   c.ink);
+    r.style.setProperty('--bg', c.bg);
+    r.style.setProperty('--text',   c.text);
     r.style.setProperty('--muted', c.muted);
-    r.style.setProperty('--rule',  c.rule);
+    r.style.setProperty('--line',  c.line);
 
     // apply fonts
     r.style.setProperty('--font-display', f.display);
@@ -1150,14 +1066,10 @@ function addScrambleButton() {
     if (!nav) return;
     const btn = document.createElement('button');
     btn.id = 'scramble-style';
-    btn.textContent = 'RANDOMIZE';
+    btn.textContent = 'Shake gently.';
     btn.addEventListener('click', scrambleStyle);
     nav.appendChild(btn);
 }
-
-// ============================================================================
-// EXTRAS
-// ============================================================================
 
 
 const navLinks = document.querySelectorAll("#main-nav a");
@@ -1171,4 +1083,25 @@ navLinks.forEach(link => {
   link.addEventListener("mouseleave", () => {
     link.style.transform = "rotate(0deg)";
   });
+});
+
+const splash = document.querySelector("#splash");
+const splashTrack = document.querySelector(".splash-track");
+
+window.addEventListener("scroll", () => {
+
+    const rect = splash.getBoundingClientRect();
+
+    const scrollAmount = -rect.top;
+
+    const maxScroll = splash.offsetHeight - window.innerHeight;
+
+    const progress = Math.min(
+        Math.max(scrollAmount / maxScroll, 0),
+        1
+    );
+
+    const moveX = progress * window.innerWidth;
+
+    splashTrack.style.transform = `translateX(-${moveX}px)`;
 });

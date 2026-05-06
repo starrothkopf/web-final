@@ -1,16 +1,13 @@
-/* ==========================================================================
-   RESET + BASE
-   ========================================================================== */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --ink: #1f1e1d;
-  --paper: #f2eee5;
-  --muted: #8b8680;
-  --rule: #d8d2c6;
-  --alg-color: #c0392b;             /* updated by JS when algorithm changes */
-  --font-display: "Base", sans-serif;
+  --text: #191a20;
+  --bg: #fffdf8;
+  --muted: #b99090;
+  --line: #ff5731;
+  --alg-color: #644eb9;             
+  --font-display: "Terminal Grotesque", monospace;
   --font-heading: "Terminal Grotesque", monospace;
   --font-ui: "Terminal Grotesque", -apple-system, sans-serif;
   --card-radius: 0px;
@@ -18,8 +15,8 @@
 }
 
 html, body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-ui);
   font-size: 16px;
   line-height: 1.55;
@@ -34,89 +31,15 @@ a { color: inherit; }
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Base";
-  src: url("./fonts/bianzhidai-Base.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Brush";
-  src: url("./fonts/bianzhidai-Brush.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Bubble";
-  src: url("./fonts/bianzhidai-Buble.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Cloud";
-  src: url("./fonts/bianzhidai-Cloud.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Cube";
-  src: url("./fonts/bianzhidai-Cube.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Pearl";
-  src: url("./fonts/bianzhidai-Peal.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Ring";
-  src: url("./fonts/bianzhidai-Ring.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Stitches";
-  src: url("./fonts/bianzhidai-Stitches.woff") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Messier";
-  src: url("./fonts/bianzhidai-Messier.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Messy";
-  src: url("./fonts/bianzhidai-Messy.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* ==========================================================================
-   APP SHELL + NAV
-   ========================================================================== */
-
 #app { min-height: 100vh; display: flex; flex-direction: column; }
 
 #main-nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule);
-  padding: 12px 24px;
+  background: var(--line);
+  border-bottom: 1px solid var(--muted);
+  padding: 5px 10px;
   display: flex;
   gap: 24px;
   font-size: 0.85rem;
@@ -130,13 +53,9 @@ a { color: inherit; }
 #main-nav a:hover { transform: rotate(-15deg); }
 #main-nav a:first-child { margin-right: auto; font-weight: 600; opacity: 1; font-family: var(--font-display); }
 
-/* ==========================================================================
-   SECTIONS
-   ========================================================================== */
-
 section {
   padding: 60px 32px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--line);
 }
 
 .section-inner { max-width: 1100px; margin: 0 auto; }
@@ -148,6 +67,48 @@ section {
   justify-content: left;
   align-items: left;
   text-align: left;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#splash {
+    height: 300vh; 
+    position: relative;
+}
+
+.splash-track {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+    width: 200vw;
+
+    display: flex;
+    overflow: hidden;
+}
+
+.panel {
+    width: 100vw;
+    height: 100vh;
+
+    box-sizing: border-box;
+
+    flex-shrink: 0;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #splash h1 {
@@ -167,23 +128,19 @@ footer {
   color: var(--muted);
 }
 
-/* ==========================================================================
-   GENERATOR
-   ========================================================================== */
-
 #generator-section { padding: 40px 24px; }
 
 #generator-layout {
   display: grid;
   grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr);
-  gap: 24px;
+  gap: 10px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 #generator {
-  border: 1px solid var(--rule);
-  padding: 24px;
+  border: 1px solid var(--line);
+  padding: 20px;
   transition: background-color 0.4s ease, color 0.4s ease;
   min-height: 500px;
 }
@@ -192,7 +149,7 @@ footer {
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-bottom: 1px solid currentColor;
   padding-bottom: 8px;
 }
@@ -201,8 +158,7 @@ footer {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   opacity: 0.7;
 }
 
@@ -210,22 +166,19 @@ footer {
 
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* ==========================================================================
-   METHOD / SOURCE BUTTONS
-   ========================================================================== */
-
 .method-btn,
 .source-btn {
   border: 1px solid currentColor;
+  border-radius: 20px;
   background: transparent;
   color: inherit;
   padding: 6px 12px;
   font-size: 0.85rem;
   cursor: pointer;
-  opacity: 0.5;
   transition: opacity 0.15s, background-color 0.15s;
   font-family: inherit;
 }
+
 .method-btn:hover,
 .source-btn:hover { opacity: 0.85; }
 
@@ -233,25 +186,22 @@ footer {
 .source-btn.active {
   opacity: 1;
   font-weight: 600;
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+  transform: rotate(5deg);
 }
 
 #alg-select {
   font: inherit;
   padding: 6px 10px;
   border: 1px solid currentColor;
+  border-radius: 20px;
   background: transparent;
   color: inherit;
-  border-left: 4px solid var(--alg-color);
   cursor: pointer;
   min-width: 220px;
 }
-
-/* ==========================================================================
-   GENERATOR FORM (input area, owned by source)
-   ========================================================================== */
 
 #generator-form { margin: 16px 0; }
 
@@ -278,7 +228,7 @@ footer {
   color: inherit;
   cursor: pointer;
 }
-.source-wiki-btn:hover { background: currentColor; color: var(--paper); }
+.source-wiki-btn:hover { background: currentColor; color: var(--bg); }
 .source-wiki-status { font-size: 0.85rem; opacity: 0.7; margin: 8px 0; }
 .source-wiki-preview {
   font-size: 0.85rem;
@@ -288,10 +238,6 @@ footer {
   border: 1px solid currentColor;
   opacity: 0.85;
 }
-
-/* ==========================================================================
-   GENERATOR ACTIONS (randomize button + advanced toggle)
-   ========================================================================== */
 
 .generator-actions {
   display: flex;
@@ -305,12 +251,12 @@ footer {
   font-size: 1rem;
   font-family: inherit;
   border: 1px solid currentColor;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--text);
+  color: var(--bg);
   cursor: pointer;
   transition: opacity 0.15s;
 }
-#make-poem:hover:not(:disabled) { opacity: 0.85; }
+#make-poem:hover:not(:disabled) { transform: rotate(5deg); }
 #make-poem:disabled { opacity: 0.5; cursor: wait; }
 
 .link-btn {
@@ -324,10 +270,6 @@ footer {
   opacity: 0.6;
 }
 .link-btn:hover { opacity: 1; }
-
-/* ==========================================================================
-   OUTPUT (the live poem)
-   ========================================================================== */
 
 #output-area { margin-top: 16px; min-height: 100px; }
 
@@ -387,14 +329,10 @@ footer {
   outline: none;
 }
 
-/* ==========================================================================
-   INFO ASIDE
-   ========================================================================== */
-
 #panel-info {
-  border: 1px solid var(--rule);
+  border: 1px solid var(--muted);
   padding: 20px;
-  background: var(--paper);
+  background: var(--line);
   align-self: start;
   position: sticky;
   top: 70px;
@@ -404,20 +342,15 @@ footer {
 
 .aside-heading {
   font-size: 0.7rem;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
   margin-bottom: 12px;
 }
 
-.info-block { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+.info-block { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .info-block:last-child { border-bottom: none; }
 .info-block h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
 .info-block p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
-
-/* ==========================================================================
-   MY POEMS / FAVORITE LINES
-   ========================================================================== */
 
 .my-poems-grid {
   display: grid;
@@ -428,7 +361,6 @@ footer {
 .my-poems-col h3 {
   font-family: var(--font-heading);
   font-size: 0.75rem;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
   margin-bottom: 12px;
@@ -438,15 +370,15 @@ footer {
   font-style: italic;
   color: var(--muted);
   padding: 12px;
-  border: 1px dashed var(--rule);
+  border: 1px dashed var(--line);
 }
 
 .saved-poem {
   position: relative;
   padding: 16px 40px 16px 16px;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--line);
   margin-bottom: 12px;
-  background: var(--paper);
+  background: var(--bg);
 }
 .saved-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
 .saved-lines p { margin: 2px 0; font-size: 0.95rem; }
@@ -466,14 +398,10 @@ footer {
 .fav-line {
   position: relative;
   padding: 10px 36px 10px 12px;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--line);
   margin-bottom: 8px;
 }
 .fav-line p { font-size: 0.95rem; }
-
-/* ==========================================================================
-   EXPLORE / READING (placeholders)
-   ========================================================================== */
 
 .section-hint {
   color: var(--muted);
@@ -510,9 +438,10 @@ footer {
   min-width: calc(50% - 10px);
   margin-right: 20px;
   padding: 24px;
-  border: 1px var(--border-style) var(--rule);
+  border: 1px var(--border-style) var(--line);
   border-radius: var(--card-radius);
-  background: var(--paper);
+  background: var(--muted);
+  color: var(--bg);
   box-sizing: border-box;
 }
 
@@ -526,8 +455,7 @@ footer {
 }
 
 .quote-source {
-  font-style: italic;
-  color: #666;
+  font-family: var(--font-heading);
 }
 
 #prev, #next {
@@ -537,31 +465,35 @@ footer {
   cursor: pointer;
 }
 
-/* ==========================================================================
-   LINKS
-   ========================================================================== */
-
 #links-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 10px;
 
   max-width: 1400px;
-  margin: 10px auto;
+  margin: 5px auto;
 }
 
 .link-card {
-  border: 1px var(--border-style) var(--rule);
+  border: 1px var(--border-style) var(--muted);
   border-radius: var(--card-radius);
-  padding: 24px;
-  background: var(--paper);
+  padding: 20px;
+  background: var(--line);
+  transition: 0.1s;
+  text-decoration: none;
+  cursor: pointer;
 }
-.link-card:nth-child(odd)  { transform: rotate(0.3deg); }
-.link-card:nth-child(even) { transform: rotate(-0.2deg); }
+
+.link-card:hover {
+  border: 1px var(--border-style) var(--line);
+  background: var(--muted);
+  color: var(--bg);
+}
 
 .link-title {
   font-size: 1.3rem;
   font-weight: bold;
+  font-family: var(--font-heading);
 
   margin-bottom: 12px;
 }
@@ -571,16 +503,6 @@ footer {
   margin-bottom: 20px;
 }
 
-.link-anchor {
-  color: inherit;
-  opacity: 0.65;
-  text-decoration: underline;
-}
-.link-anchor:hover { opacity: 1; }
-
-/* ==========================================================================
-   SCRAMBLE BUTTON
-   ========================================================================== */
 
 #scramble-style {
   margin-left: auto;
@@ -592,30 +514,22 @@ footer {
   letter-spacing: 0.12em;
   padding: 3px 10px;
   cursor: pointer;
-  opacity: 0.6;
 }
-#scramble-style:hover { opacity: 1; transform: rotate(-3deg); }
+#scramble-style:hover { transform: rotate(-3deg); }
 
-
-/* ==========================================================================
-   TOOLTIP
-   ========================================================================== */
 
 #tooltip {
   position: fixed;
   pointer-events: none;
   font-size: 0.75rem;
   padding: 4px 10px;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--text);
+  color: var(--bg);
   white-space: nowrap;
   z-index: 1000;
   letter-spacing: 0.03em;
 }
 
-/* ==========================================================================
-   VERBASIZER COLUMNS
-   ========================================================================== */
 
 .verbasizer-cols {
   display: grid;
@@ -633,7 +547,6 @@ footer {
 
 .verbasizer-col h4 {
   font-size: 0.7rem;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   opacity: 0.7;
   font-weight: 600;
@@ -660,7 +573,7 @@ footer {
   color: inherit;
   cursor: pointer;
 }
-.verbasizer-fetch:hover:not(:disabled) { background: currentColor; color: var(--paper); }
+.verbasizer-fetch:hover:not(:disabled) { background: currentColor; color: var(--bg); }
 .verbasizer-fetch:disabled { opacity: 0.5; cursor: wait; }
 
 .verbasizer-status {
@@ -669,9 +582,6 @@ footer {
   min-height: 1em;
 }
 
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
 
 @media (max-width: 900px) {
   #generator-layout { grid-template-columns: 1fr; }
